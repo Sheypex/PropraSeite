@@ -1,3 +1,89 @@
 body{
   background-color: #1da1f2;
 }
+
+/* Palette URL: http://paletton.com/#uid=73u0u0ktQWvhTXbn+WWJoUYRy-5 */
+
+.color-primary-0 {
+    color: #1DA3F2
+}
+
+/* Main Primary color */
+.color-primary-1 {
+    color: #73C4F4
+}
+
+.color-primary-2 {
+    color: #47B3F3
+}
+
+.color-primary-3 {
+    color: #0798EE
+}
+
+.color-primary-4 {
+    color: #036FAE
+}
+
+.color-secondary-1-0 {
+    color: #303FF4
+}
+
+/* Main Secondary color (1) */
+.color-secondary-1-1 {
+    color: #8088F6
+}
+
+.color-secondary-1-2 {
+    color: #5762F5
+}
+
+.color-secondary-1-3 {
+    color: #1223F0
+}
+
+.color-secondary-1-4 {
+    color: #0815BB
+}
+
+.color-secondary-2-0 {
+    color: #FFC011
+}
+
+/* Main Secondary color (2) */
+.color-secondary-2-1 {
+    color: #FFD971
+}
+
+.color-secondary-2-2 {
+    color: #FFCC40
+}
+
+.color-secondary-2-3 {
+    color: #FFBB00
+}
+
+.color-secondary-2-4 {
+    color: #FFBB00
+}
+
+.color-complement-0 {
+    color: #FF9411
+}
+
+/* Main Complement color */
+.color-complement-1 {
+    color: #FFBF71
+}
+
+.color-complement-2 {
+    color: #FFA940
+}
+
+.color-complement-3 {
+    color: #FF8C00
+}
+
+.color-complement-4 {
+    color: #FF8C00
+}
