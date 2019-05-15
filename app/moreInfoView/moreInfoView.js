@@ -1,14 +1,14 @@
 'use strict';
 
-angular.module('myApp.view2', ['ngRoute'])
+angular.module('myApp.moreInfoView', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/moreInfoView', {
+  $routeProvider.when('/moreInfo', {
     templateUrl: 'moreInfoView/moreInfoView.html',
-    controller: 'View2Ctrl'
+    controller: 'moreInfoViewCtrl'
   });
 }])
 
-.controller('View2Ctrl', [function() {
+.controller('moreInfoViewCtrl', [function() {
 
 }]);
