@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "homeView.js",
+  "sourceRoot": "",
+  "sources": [
+    "homeView.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA;AAAA,MAAA;;EAEA,OAAO,CAAC,MAAR,CAAe,gBAAf,EAAiC,CAAC,SAAD,CAAjC,CACE,CAAC,MADH,CACU;IAAC,gBAAD;IAAmB,QAAA,CAAC,cAAD,CAAA;aACzB,cAAc,CAAC,IAAf,CAAoB,GAApB;IAAyB;QACvB,WAAA,EAAa,wBADU;QAEvB,UAAA,EAAY;MAFW,CAAzB;IADyB,CAAnB;GADV,CAOE,CAAC,UAPH,CAOc,WAPd,EAO2B;IAAC,QAAA,CAAA,CAAA;aACxB,IAAA,CAAA;IADwB,CAAD;GAP3B;;EAWA,IAAA,GAAO,MAAA,QAAA,CAAA,CAAA;AACL,QAAA,IAAA,EAAA,GAAA,EAAA,GAAA,EAAA;IAAA,IAAA,GACE;MAAA,KAAA,EAAO,CAAP;MACA,IAAA,EAAM;IADN;IAEF,GAAA,GACE;MAAA,MAAA,EAAQ,MAAR;MACA,OAAA,EACE;QAAA,cAAA,EAAgB;MAAhB,CAFF;MAGA,IAAA,EAAM,IAAI,CAAC,SAAL,CAAe,IAAf;IAHN;IAKF,GAAA,GAAM,CAAA,MAAM,KAAA,CAAM,4BAAN,EAAoC,GAApC,CAAN;IACN,IAAA,GAAO,CAAA,MAAM,GAAG,CAAC,IAAJ,CAAA,CAAN;WACP,OAAO,CAAC,GAAR,CAAY,IAAZ;EAZK;AAbP",
+  "sourcesContent": [
+    "#'use strict';\r\n\r\nangular.module('myApp.homeView', ['ngRoute'])\r\n  .config(['$routeProvider', ($routeProvider) ->\r\n    $routeProvider.when '/', {\r\n      templateUrl: 'homeView/homeView.html',\r\n      controller: 'View1Ctrl'\r\n    }\r\n])\r\n  .controller('View1Ctrl', [() ->\r\n    demo()\r\n  ])\r\n\r\ndemo = () ->\r\n  test =\r\n    hallo: 5\r\n    fast: \"Da\"\r\n  opt =\r\n    method: \"POST\"\r\n    headers:\r\n      \"Content-Type\": \"application/json\"\r\n    body: JSON.stringify(test)\r\n\r\n  res = await fetch \"http://localhost:4017/test\", opt\r\n  data = await res.json()\r\n  console.log data\r\n"
+  ]
+}

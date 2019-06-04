@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "",
+  "sources": [
+    "index.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,GAAA,EAAA,OAAA,EAAA;;EAAA,OAAA,GAAU,OAAA,CAAQ,SAAR;;EACV,GAAA,GAAM,OAAA,CAAA;;EACN,IAAA,GAAO;;EAEP,GAAG,CAAC,GAAJ,CAAQ,OAAO,CAAC,MAAR,CAAe,QAAf,CAAR;;EACA,GAAG,CAAC,GAAJ,CAAQ,OAAO,CAAC,IAAR,CAAA,CAAR;;EAEA,GAAG,CAAC,GAAJ,CAAQ,KAAR,EAAe,QAAA,CAAC,GAAD,EAAM,GAAN,CAAA;WACb,GAAG,CAAC,IAAJ,CAAS,aAAA,GAAgB,IAAI,CAAC,GAAL,CAAA,CAAzB;EADa,CAAf;;EAGA,GAAG,CAAC,MAAJ,CAAW,IAAX,EAAiB,QAAA,CAAA,CAAA;WACf,OAAO,CAAC,GAAR,CAAY,CAAA,kBAAA,CAAA,CAAqB,IAArB,CAAA,CAAZ;EADe,CAAjB;;EAGA,GAAG,CAAC,IAAJ,CAAS,OAAT,EAAkB,QAAA,CAAC,GAAD,EAAM,GAAN,CAAA;IAChB,OAAO,CAAC,GAAR,CAAY,GAAZ;IACA,OAAO,CAAC,GAAR,CAAY,GAAG,CAAC,IAAhB;WACA,GAAG,CAAC,IAAJ,CAAS;MACP,MAAA,EAAQ,MADD;MAEP,IAAA,EAAM,CAFC;MAGP,KAAA,EAAO;IAHA,CAAT;EAHgB,CAAlB;AAbA",
+  "sourcesContent": [
+    "express = require \"express\"\r\napp = express()\r\nport = 4017\r\n\r\napp.use express.static \"../app\"\r\napp.use express.json()\r\n\r\napp.get \"/kA\", (req, res) ->\r\n  res.send \"Timestamp: \" + Date.now()\r\n\r\napp.listen port, () ->\r\n  console.log \"Listening on port #{port}\"\r\n\r\napp.post \"/test\", (req, res) ->\r\n  console.log req\r\n  console.log req.body\r\n  res.json({\r\n    status: \"succ\"\r\n    test: 5\r\n    jetzt: \"Hier\"\r\n  })\r\n\r\n\r\n"
+  ]
+}
