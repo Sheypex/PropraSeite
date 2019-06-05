@@ -32,7 +32,9 @@
   updateGraphs = function(topic) {
     var url;
     url = `http://localhost:8080/test?search=${topic}&type=1`;
-    fetch(url).then(function(response) {
+    fetch(url, {
+      mode: "no-cors"
+    }).then(function(response) {
       return response.json();
     }).then(function(result) {
       var div;

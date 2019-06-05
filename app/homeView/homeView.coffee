@@ -21,7 +21,7 @@ angular.module('myApp.homeView', ['ngRoute'])
 
 updateGraphs = (topic) ->
   url = "http://localhost:8080/test?search=#{topic}&type=1"
-  fetch(url).then((response) ->
+  fetch(url, {mode: "no-cors"}).then((response) ->
     response.json()
   )
     .then((result) ->
