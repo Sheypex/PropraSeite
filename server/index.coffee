@@ -9,6 +9,7 @@ app.listen port, () ->
   console.log "Listening on port #{port}"
 
 app.get('/test', (req, res)->
+  console.log req.query
   spawn = require('child_process').spawn
   process = spawn('python', ['./main.py',
     req.query.search, # pass data from

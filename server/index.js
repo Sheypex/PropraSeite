@@ -18,6 +18,7 @@
 
   app.get('/test', function(req, res) {
     var process, result, spawn;
+    console.log(req.query);
     spawn = require('child_process').spawn;
     process = spawn('python', [
       './main.py',

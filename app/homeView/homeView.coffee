@@ -8,7 +8,7 @@ angular.module('myApp.homeView', ['ngRoute'])
     }
 ])
   .controller('View1Ctrl', [() ->
-    url = "http://localhost:8080/test"
+    url = "http://localhost:8080/test?search=Trump&type=1"
     fetch(url).then((response) -> response.json())
     .then((result) ->
       console.log('success:', result)
