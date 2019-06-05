@@ -7,18 +7,31 @@ angular.module('myApp.homeView', ['ngRoute'])
       controller: 'View1Ctrl'
     }
 ])
-  .controller('View1Ctrl', [() ->
-    url = "http://localhost:8080/test?search=Trump&type=1"
-    fetch(url).then((response) -> response.json())
+  .controller('View1Ctrl', ["$scope",($scope) ->
+    $scope.topics = ["Trump", "Klimawandel", "FakeNews"]
+    $scope.topic = $scope.topics[0]
+    $scope.selectTopic = (topic) ->
+      $scope.topic = topic
+      updateGraphs($scope.topic)
+      console.log topic
+  #
+    updateGraphs($scope.topic)
+
+  ])
+
+updateGraphs = (topic) ->
+  url = "http://localhost:8080/test?search=#{topic}&type=1"
+  fetch(url).then((response) ->
+    response.json()
+  )
     .then((result) ->
       console.log('success:', result)
       div = document.getElementById('test')
       div.innerHTML = "title: #{result.title}<br/>message: #{result.message}"
     )
     .catch((error) -> console.log('error:', error))
-    
-    separateData()
-  ])
+
+  separateData()
 
 getDateFormat= (date) ->
   return date.getFullYear() + "-" + checkDateLength(date.getMonth() + 1) + "-" + checkDateLength(date.getDate()) + " " + checkDateLength(date.getHours()) + ":" + checkDateLength(date.getMinutes()) + ":" + checkDateLength(date.getSeconds())

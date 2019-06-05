@@ -18,7 +18,6 @@
 
   app.get('/test', function(req, res) {
     var process, result, spawn;
-    console.log(req.query);
     spawn = require('child_process').spawn;
     process = spawn('python', [
       './main.py',
@@ -29,7 +28,9 @@
     process.stdout.on('data', function(data) {
       return result += data.toString();
     });
+    console.log("here");
     return process.stdout.on('end', function() {
+      console.log(result);
       return res.send(result);
     });
   });

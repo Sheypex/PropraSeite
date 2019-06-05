@@ -1,15 +1,22 @@
 <div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary" ng-repeat="topic in topics" ng-click="selectTopic(topic)">{{topic}}</button>
+            </div>
+        </div>
+    </div>
     <div class="row text-white">
         <div class="col">
             <div id="test"></div>
-            <h1 style="text-align: center; color: #247BA0">Trump Tweets Loaded</h1>
+            <h1>Trump Tweets Loaded</h1>
             <div id="term">
             </div>
             <br>
-            <h1 style="text-align: center; color: #247BA0">Trump Hashtags counted</h1>
+            <h1>Trump Hashtags counted</h1>
             <div id="counted"></div>
             <br>
-            <h1 style="text-align: center; color: #247BA0">Trump Top Users counted</h1>
+            <h1>Trump Top Users counted</h1>
             <div id="topuser"></div>
             <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
                 labore

@@ -9,7 +9,6 @@ app.listen port, () ->
   console.log "Listening on port #{port}"
 
 app.get('/test', (req, res)->
-  console.log req.query
   spawn = require('child_process').spawn
   process = spawn('python', ['./main.py',
     req.query.search, # pass data from
@@ -20,8 +19,9 @@ app.get('/test', (req, res)->
   process.stdout.on('data', (data) ->
     result += data.toString()
   )
-
+  console.log "here"
   process.stdout.on('end', () ->
+    console.log result
     res.send(result)
   )
 )
