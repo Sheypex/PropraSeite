@@ -11,7 +11,7 @@ def load_terms_counted_file(path):  # loads the file, sorts it and builds a json
     return result.to_json(orient='values')
 
 
-json = load_terms_counted_file('/Users/mauri/Desktop/ProPra/TrumpTermsCounted.csv')
+json = load_terms_counted_file('./Data/TrumpTermsCounted.csv')
 # print json
 
 __author__ = 'Cesar Mauricio Acuna Herrera'

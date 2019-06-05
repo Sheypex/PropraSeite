@@ -24,9 +24,9 @@ def is_in_database():  # TODO: check with the database if the search term is val
 
 def get_tweets():  # loads the tweets
     if is_in_database():
-        term_result = load_term_file("/Users/mauri/Desktop/ProPra/" + search + ".csv")  # result = JSON_Object containing pair of JSON_Objects
-        term_counted_result = load_terms_counted_file("/Users/mauri/Desktop/ProPra/" + search + "TermsCounted.csv")  # result = JSON_Array containing JSON_Arrays
-        term_topuser_result = load_terms_topuser_file("/Users/mauri/Desktop/ProPra/" + search + "TopUserTwoColumns.csv")  # result = JSON_Array containing JSON_Arrays
+        term_result = load_term_file("./Data/" + search + ".csv")  # result = JSON_Object containing pair of JSON_Objects
+        term_counted_result = load_terms_counted_file("./Data/" + search + "TermsCounted.csv")  # result = JSON_Array containing JSON_Arrays
+        term_topuser_result = load_terms_topuser_file("./Data/" + search + "TopUserTwoColumns.csv")  # result = JSON_Array containing JSON_Arrays
         result = "{\"result\":{\"term\":"+term_result+",\"counted\":"+term_counted_result+",\"topuser\":"+term_topuser_result+"}}"
         return result
     return {"error": "unable to retrieve data from the search term: "+search}
@@ -50,7 +50,7 @@ def define_action():  # defines the action: 1. get_tweets 2. load_tweets
 
 
 search, search_type = load_variables()  # type: (str, str)
-tweets_available = ["Trump", "Klimawandel","FakeNews"]
+tweets_available = ["Trump", "Klimawandel", "FakeNews"]
 result = define_action()
 
 print(str(result))  # this print is the one who is responsible for sending the json results back to the node server

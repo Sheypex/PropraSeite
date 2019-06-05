@@ -8,11 +8,11 @@ def load_terms_topuser_file(path):  # loads the file, sorts it and builds a json
     result = pd.read_csv(path, sep=";", error_bad_lines=False)
     result = result[['User', 'Count']].copy()
     result = result[::-1]
-    print result.to_json(orient='values')
+    #  print result.to_json(orient='values')
     return result.to_json(orient='values')
 
 
-json = load_terms_topuser_file('/Users/mauri/Desktop/ProPra/TrumpTopUserTwoColumns.csv')
+json = load_terms_topuser_file('./Data/TrumpTopUserTwoColumns.csv')
 # print json
 
 __author__ = 'Cesar Mauricio Acuna Herrera'

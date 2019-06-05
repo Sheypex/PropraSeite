@@ -55,7 +55,7 @@ def load_term_file(path):  # loads the file, sorts it and builds a json
     return build_json(tweets)
 
 
-json = load_term_file("/Users/mauri/Desktop/ProPra/Trump.csv")
+json = load_term_file("./Data/Trump.csv")
 # print json
 
 __author__ = 'Cesar Mauricio Acuna Herrera'
