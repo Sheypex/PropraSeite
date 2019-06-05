@@ -1,297 +1,125 @@
-# `angular-seed` — the seed for AngularJS apps
+# Gruppe 4 - Message Alert System
 
-This project is an application skeleton for a typical [AngularJS][angularjs] web app. You can use it
-to quickly bootstrap your angular webapp projects and dev environment for these projects.
+## **General Information**
 
-The seed contains a sample AngularJS application and is preconfigured to install the AngularJS
-framework and a bunch of development and testing tools for instant web development gratification.
+This Readme file should contain information about **How To** deploy, install and execute our project, as the **Requirements** to do it. Please, try to document all the steps and information required to do it, so everybody has an understanding of how to start our project. Make it as simple and easy as possible to avoid any problems. Document everything you might think its important. Feel free to make any changes to this file. 
 
-The seed app doesn't do much, just shows how to wire two controllers and views together.
+Please, try to make contantly commits to the repository so it is easy to follow each others activity and contributions to the project
 
+Happy coding!
 
-## Getting Started
+## **Technologie**
 
-To get you started you can simply clone the `angular-seed` repository and install the dependencies:
+The following technologies have been used to develop this Project:
+- KNIME: KNIME is a Analytics Platform leading open solution for data-driven innovation, designed for discovering the potential hidden in data, mining for fresh insights, or predicting new futures. (https://www.knime.com/about)
+- Python (https://www.python.org)
+- Crontab: The software utility cron is a time-based job scheduler in Unix-like computer operating systems. People who set up and maintain software environments use cron to schedule jobs (commands or shell scripts) to run periodically at fixed times, dates, or intervals. (https://en.wikipedia.org/wiki/Cron)
+- Raspberry Pi Model B+ (https://www.raspberrypi.org)
+- ...
 
-### Prerequisites
+## **Requirements**
 
-You need git to clone the `angular-seed` repository. You can get git from [here][git].
+This project is thought to be running on a Raspberry Pi 3 Modell B+
 
-We also use a number of Node.js tools to initialize and test `angular-seed`. You must have Node.js
-and its package manager (npm) installed. You can get them from [here][node].
+- Python 2.7.13
 
-### Clone `angular-seed`
+## **How To**
 
-Clone the `angular-seed` repository using git:
-
-```
-git clone https://github.com/angular/angular-seed.git
-cd angular-seed
-```
-
-If you just want to start a new project without the `angular-seed` commit history then you can do:
+#### _Run Knime on the Console_
+To run Knime on the Console just execute this code (linux):
 
 ```
-git clone --depth=1 https://github.com/angular/angular-seed.git <your-project-name>
+knime -nosplash -application org.knime.product.KNIME_BATCH_APPLICATION​
 ```
 
-The `depth=1` tells git to only pull down one commit worth of historical data.
-
-### Install Dependencies
-
-We have two kinds of dependencies in this project: tools and AngularJS framework code. The tools
-help us manage and test the application.
-
-* We get the tools we depend upon and the AngularJS code via `npm`, the [Node package manager][npm].
-* In order to run the end-to-end tests, you will also need to have the
-  [Java Development Kit (JDK)][jdk] installed on your machine. Check out the section on
-  [end-to-end testing](#e2e-testing) for more info.
-
-We have preconfigured `npm` to automatically copy the downloaded AngularJS files to `app/lib` so we
-can simply do:
+If needed, Specify the working directory as following:
 
 ```
-npm install
+knime -nosplash -application org.knime.product.KNIME_BATCH_APPLICATION -workflowDir="MY_DIRECTORY/Knime_project"
 ```
 
-Behind the scenes this will also call `npm run copy-libs`, which copies the AngularJS files and
-other front end dependencies. After that, you should find out that you have two new directories in
-your project.
-
-* `node_modules` - contains the npm packages for the tools we need
-* `app/lib` - contains the AngularJS framework files and other front end dependencies
-
-*Note copying the AngularJS files from `node_modules` to `app/lib` makes it easier to serve the
-files by a web server.*
-
-### Run the Application
-
-We have preconfigured the project with a simple development web server. The simplest way to start
-this server is:
+Lastly if it is on a zip file:
 
 ```
-npm start
+knime -nosplash -application org.knime.product.KNIME_BATCH_APPLICATION -workflowFile="PATH_TO_FILE/Knime_project.zip"
 ```
 
-Now browse to the app at [`localhost:8000/index.html`][local-app-url].
+Some useful Options:
 
+- ```-consoleLog``` Causes a new window to be opened containing the log messages and will keep the window open after the execution has finished. You will need to close the window manually and an error message is produced from the Java process which you can safely ignore
+- ```-nosave``` If this is specified, the workflow is not saved after execution has finished.
+- ```-reset``` Reset workflow prior to execution.
 
-## Directory Layout
+#### _Schedule Jobs with Crontab_
 
-```
-app/                  --> all of the source files for the application
-  app.css               --> default stylesheet
-  core/                 --> all app specific modules
-    version/              --> version related components
-      version.js                 --> version module declaration and basic "version" value service
-      version_test.js            --> "version" value service tests
-      version-directive.js       --> custom directive that returns the current app version
-      version-directive_test.js  --> version directive tests
-      interpolate-filter.js      --> custom interpolation filter
-      interpolate-filter_test.js --> interpolate filter tests
-  view1/                --> the view1 view template and logic
-    view1.html            --> the partial template
-    homeView.js              --> the controller logic
-    view1_test.js         --> tests of the controller
-  view2/                --> the view2 view template and logic
-    view2.html            --> the partial template
-    moreInfoView.js              --> the controller logic
-    view2_test.js         --> tests of the controller
-  app.js                --> main application module
-  index.html            --> app layout file (the main html template file of the app)
-  index-async.html      --> just like index.html, but loads js files asynchronously
-e2e-tests/            --> end-to-end tests
-  protractor-conf.js    --> Protractor config file
-  scenarios.js          --> end-to-end scenarios to be run by Protractor
-karma.conf.js         --> config file for running unit tests with Karma
-package.json          --> Node.js specific metadata, including development tools dependencies
-package-lock.json     --> Npm specific metadata, including versions of installed development tools dependencies
-```
+For our project we need to execute our workflow in a Scheduled basis. Therefore the most effective way to do it, is to create a cron job that executes a skript. Here you can find how to use Cron jobs and how to use it to create and configure the scheduler. 
 
-
-## Testing
-
-There are two kinds of tests in the `angular-seed` application: Unit tests and end-to-end tests.
-
-### Running Unit Tests
-
-The `angular-seed` app comes preconfigured with unit tests. These are written in [Jasmine][jasmine],
-which we run with the [Karma][karma] test runner. We provide a Karma configuration file to run them.
-
-* The configuration is found at `karma.conf.js`.
-* The unit tests are found next to the code they are testing and have a `.spec.js` suffix (e.g.
-  `homeView.spec.js`).
-
-The easiest way to run the unit tests is to use the supplied npm script:
+With Cron you can schedule jobs (Execution from Skripts/Commands) easily. To see the current cron jobs use this command:
 
 ```
-npm test
+crontab -l
 ```
 
-This script will start the Karma test runner to execute the unit tests. Moreover, Karma will start
-watching the source and test files for changes and then re-run the tests whenever any of them
-changes.
-This is the recommended strategy; if your unit tests are being run every time you save a file then
-you receive instant feedback on any changes that break the expected code functionality.
-
-You can also ask Karma to do a single run of the tests and then exit. This is useful if you want to
-check that a particular version of the code is operating as expected. The project contains a
-predefined script to do this:
+To edit or create a new cron job:
 
 ```
-npm run test-single-run
+crontab -e
 ```
 
-
-<a name="e2e-testing"></a>
-### Running End-to-End Tests
-
-The `angular-seed` app comes with end-to-end tests, again written in [Jasmine][jasmine]. These tests
-are run with the [Protractor][protractor] End-to-End test runner. It uses native events and has
-special features for AngularJS applications.
-
-* The configuration is found at `e2e-tests/protractor-conf.js`.
-* The end-to-end tests are found in `e2e-tests/scenarios.js`.
-
-Protractor simulates interaction with our web app and verifies that the application responds
-correctly. Therefore, our web server needs to be serving up the application, so that Protractor can
-interact with it.
-
-**Before starting Protractor, open a separate terminal window and run:**
+this will open an editor. each cron job has to be written on a single line and must follow its format. Add your job at the end of the file. The Job must follow this format: 
 
 ```
-npm start
+* * * * * command to be executed
+- - - - -
+| | | | |
+| | | | ----- Day of week (0 - 7) (Sunday=0 or 7)
+| | | ------- Month (1 - 12)
+| | --------- Day of month (1 - 31)
+| ----------- Hour (0 - 23)
+------------- Minute (0 - 59)
 ```
 
-In addition, since Protractor is built upon WebDriver, we need to ensure that it is installed and
-up-to-date. The `angular-seed` project is configured to do this automatically before running the
-end-to-end tests, so you don't need to worry about it. If you want to manually update the WebDriver,
-you can run:
+it is also possible to use some of the following reserved words:
+
+- @reboot: Executed just once at the start.
+- @yearly/@annually: Execute each Year.
+- @monthly: Execute once a Month.
+- @weekly: Once a week.
+- @daily/@midnight: Execute once a day.
+- @hourly: once an hour.
+
+Here is an example: 
+
+```@hourly /bin/execute/script.sh```
+
+In our project this is the predefinded cron job (Run our skript every 30 minutes during the week):
 
 ```
-npm run update-webdriver
+0,30 * * * 1-5 $PROJECT/start-workflow.sh
 ```
 
-Once you have ensured that the development web server hosting our application is up and running, you
-can run the end-to-end tests using the supplied npm script:
+#### Tables format
 
-```
-npm run protractor
-```
+To analize the tweets, the following tables are generated as CSV files and passed to the analizers for further processing
 
-This script will execute the end-to-end tests against the application being hosted on the
-development server.
-
-**Note:**
-Under the hood, Protractor uses the [Selenium Standalone Server][selenium], which in turn requires
-the [Java Development Kit (JDK)][jdk] to be installed on your local machine. Check this by running
-`java -version` from the command line.
-
-If JDK is not already installed, you can download it [here][jdk-download].
+###### SEARCH_Terms.csv
+|  Tweet ID | Term as String  |
+|:---------:|-----------------|
+| Number    | String          |
 
 
-## Updating AngularJS and other dependencies
+###### SEARCH.csv
+|Tweet |Tweet ID|Time               |Favorited|Retweeted|Is Favourited|Is Retweeted|Is Retweet|Retweet from|Latitude|Longitude|Country|User  | 
+|:---: |--------|-------------------|---------|---------|-------------|------------|----------|------------|--------|---------|-------|------|
+|String|Number  |yyyy-mm-dd hh:MM:ss|[0,1]    |Number   |[0,1]        |[0,1]       |[0,1]     |String      |Number  |Number   |String |String| 
 
-Since the AngularJS framework library code and tools are acquired through package managers (e.g.
-npm) you can use these tools to easily update the dependencies. Simply run the preconfigured script:
+###### SEARCH_Sentiment.csv
+|  Tweet ID | Tweet |Time               |Sentiment|
+|:---------:|-------|-------------------|---------|
+|  Number   |String |yyyy-mm-dd hh:MM:ss|[0,1]    |
 
-```
-npm run update-deps
-```
+###### SEARCH_TopUsers.csv
+|  User | Count  |
+|:-----:|--------|
+| String| Number |
 
-This will call `npm update` and `npm run copy-libs`, which in turn will find and install the latest
-versions that match the version ranges specified in the `package.json` file.
-
-If you want to update a dependency to a version newer than what the specificed range would permit,
-you can change the version range in `package.json` and then run `npm run update-deps` as usual.
-
-
-## Loading AngularJS Asynchronously
-
-The `angular-seed` project supports loading the framework and application scripts asynchronously.
-The special `index-async.html` is designed to support this style of loading. For it to work you must
-inject a piece of AngularJS JavaScript into the HTML page. The project has a predefined script to help
-do this:
-
-```
-npm run update-index-async
-```
-
-This will copy the contents of the `angular-loader.js` library file into the `index-async.html`
-page. You can run this every time you update the version of AngularJS that you are using.
-
-
-## Serving the Application Files
-
-While AngularJS is client-side-only technology and it is possible to create AngularJS web apps that
-do not require a backend server at all, we recommend serving the project files using a local
-web server during development to avoid issues with security restrictions (sandbox) in browsers. The
-sandbox implementation varies between browsers, but quite often prevents things like cookies, XHR,
-etc to function properly when an HTML page is opened via the `file://` scheme instead of `http://`.
-
-### Running the App during Development
-
-The `angular-seed` project comes preconfigured with a local development web server. It is a Node.js
-tool called [http-server][http-server]. You can start this web server with `npm start`, but you may
-choose to install the tool globally:
-
-```
-sudo npm install -g http-server
-```
-
-Then you can start your own development web server to serve static files from any folder by running:
-
-```
-http-server -a localhost -p 8000
-```
-
-Alternatively, you can choose to configure your own web server, such as Apache or Nginx. Just
-configure your server to serve the files under the `app/` directory.
-
-### Running the App in Production
-
-This really depends on how complex your app is and the overall infrastructure of your system, but
-the general rule is that all you need in production are the files under the `app/` directory.
-Everything else should be omitted.
-
-AngularJS apps are really just a bunch of static HTML, CSS and JavaScript files that need to be
-hosted somewhere they can be accessed by browsers.
-
-If your AngularJS app is talking to the backend server via XHR or other means, you need to figure
-out what is the best way to host the static files to comply with the same origin policy if
-applicable. Usually this is done by hosting the files by the backend server or through
-reverse-proxying the backend server(s) and web server(s).
-
-
-## Continuous Integration
-
-### Travis CI
-
-[Travis CI][travis] is a continuous integration service, which can monitor GitHub for new commits to
-your repository and execute scripts such as building the app or running tests. The `angular-seed`
-project contains a Travis configuration file, `.travis.yml`, which will cause Travis to run your
-tests when you push to GitHub.
-
-You will need to enable the integration between Travis and GitHub. See the
-[Travis website][travis-docs] for instructions on how to do this.
-
-
-## Contact
-
-For more information on AngularJS please check out [angularjs.org][angularjs].
-
-
-[angularjs]: https://angularjs.org/
-[git]: https://git-scm.com/
-[http-server]: https://github.com/indexzero/http-server
-[jasmine]: https://jasmine.github.io/
-[jdk]: https://wikipedia.org/wiki/Java_Development_Kit
-[jdk-download]: http://www.oracle.com/technetwork/java/javase/downloads
-[karma]: https://karma-runner.github.io/
-[local-app-url]: http://localhost:8000/index.html
-[node]: https://nodejs.org/
-[npm]: https://www.npmjs.org/
-[protractor]: http://www.protractortest.org/
-[selenium]: http://docs.seleniumhq.org/
-[travis]: https://travis-ci.org/
-[travis-docs]: https://docs.travis-ci.com/user/getting-started
