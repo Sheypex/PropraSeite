@@ -6,27 +6,31 @@
 
   app = express();
 
-  port = 4017;
+  port = 8080;
 
   app.use(express.static("../app"));
 
   app.use(express.json());
 
-  app.get("/kA", function(req, res) {
-    return res.send("Timestamp: " + Date.now());
-  });
-
   app.listen(port, function() {
     return console.log(`Listening on port ${port}`);
   });
 
-  app.post("/test", function(req, res) {
-    console.log(req);
-    console.log(req.body);
-    return res.json({
-      status: "succ",
-      test: 5,
-      jetzt: "Hier"
+  app.get('/test', function(req, res) {
+    var process, result, spawn;
+    console.log(req.query);
+    spawn = require('child_process').spawn;
+    process = spawn('python', [
+      './main.py',
+      req.query.search, // pass data from
+      req.query.type // GET method. Example: .../test?search=trump&type=1
+    ]);
+    result = "";
+    process.stdout.on('data', function(data) {
+      return result += data.toString();
+    });
+    return process.stdout.on('end', function() {
+      return res.send(result);
     });
   });
 
