@@ -14,10 +14,17 @@ angular.module('myApp.homeView', ['ngRoute'])
       $scope.topic = topic
       updateGraphs($scope.topic)
       console.log topic
-  #
+    #
+    $scope.userEmail = ""
+    $scope.sendEmail = () ->
+      sendEmail($scope.userEmail)
+    #
     updateGraphs($scope.topic)
 
   ])
+
+sendEmail = (userEmail) ->
+  console.log userEmail
 
 updateGraphs = (topic) ->
   url = "http://localhost:8080/test?search=#{topic}&type=1"

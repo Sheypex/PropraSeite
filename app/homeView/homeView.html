@@ -1,9 +1,30 @@
 <div class="container">
-    <div class="row">
-        <div class="col">
+    <div class="clearfix">
+        <div class="float-left">
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-secondary" ng-repeat="topic in topics" ng-click="selectTopic(topic)">{{topic}}</button>
+                <button type="button" class="btn btn-secondary" ng-repeat="topic in topics"
+                        ng-click="selectTopic(topic)">{{topic}}
+                </button>
             </div>
+        </div>
+        <div class="float-right">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <button class="btn btn-secondary" ng-click="sendEmail()" type="button" id="button-addon1">Send me an
+                        Email
+                    </button>
+                </div>
+                <form name="userEmailForm">
+                    <input type="email" class="form-control" ng-model="userEmail" name="emailInput"
+                           placeholder="myEmail@example.com"></form>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix">
+        <div class="float-right">
+            <small ng-show="userEmailForm.emailInput.$error.email" class="form-text text-white">Not a valid e-mail
+                address
+            </small>
         </div>
     </div>
     <div class="row text-white">
