@@ -32,19 +32,18 @@
   updateGraphs = function(topic) {
     var url;
     url = `http://localhost:8080/test?search=${topic}&type=1`;
-    fetch(url, {
+    return fetch(url, {
       mode: "no-cors"
     }).then(function(response) {
       return response.json();
     }).then(function(result) {
-      var div;
       console.log('success:', result);
-      div = document.getElementById('test');
-      return div.innerHTML = `title: ${result.title}<br/>message: ${result.message}`;
+      /*div = document.getElementById('test')
+      div.innerHTML = "title: #{result.title}<br/>message: #{result.message}"*/
+      return separateData(result, topic);
     }).catch(function(error) {
       return console.log('error:', error);
     });
-    return separateData();
   };
 
   getDateFormat = function(date) {
@@ -59,13 +58,13 @@
     }
   };
 
-  plotTerm = function(xData, yData) {
+  plotTerm = function(xData, yData, topic) {
     var layout, termData, trace1;
     trace1 = {
       x: xData,
       y: yData,
       type: 'line',
-      name: 'Trump Tweets Loaded'
+      name: `${topic} Tweets Loaded`
     };
     layout = {
       title: {},
@@ -144,9 +143,10 @@
     return JSON.parse(jsonString);
   };
 
-  separateData = function() {
-    var count, countedData, data, hashtags, size, size2, termsData, topUser, topUserData, xCounted, xTerm, xTopUser, yCounted, yTerm, yTopUser;
-    data = loadData();
+  separateData = function(data, topic) {
+    var count, countedData, hashtags, size, size2, termsData, topUser, topUserData, xCounted, xTerm, xTopUser, yCounted, yTerm, yTopUser;
+    //data = loadData()
+
     // terms Data
     termsData = data.result.term;
     xTerm = [];
@@ -184,7 +184,7 @@
       return topUser.push(topUserData[key][0]);
     });
     // plot all the data  and visualize it
-    plotTerm(xTerm, yTerm);
+    plotTerm(xTerm, yTerm, topic);
     plotBubbleChart(xCounted, yCounted, hashtags, size, "counted");
     return plotBubbleChart(xTopUser, yTopUser, topUser, size2, "topuser");
   };

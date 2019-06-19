@@ -1,4 +1,5 @@
 express = require "express"
+parse = require "csv-parse"
 app = express()
 port = 8080
 
@@ -19,10 +20,29 @@ app.get('/test', (req, res)->
   process.stdout.on('data', (data) ->
     result += data.toString()
   )
-  console.log "here"
   process.stdout.on('end', () ->
     console.log result
     res.send(result)
   )
 )
 
+test = () ->
+  output = []
+  parser = parse({
+    delimiter: ':'
+  })
+  parser.on('readable', ()->
+    record = undefined
+    while (record = parser.read())
+      output.push(record)
+  )
+  parser.on('error', (err)->
+    console.error(err.message)
+  )
+  parser.on('end', ()->{}
+  )
+  parser.write("root:x:0:0:root:/root:/bin/bash\n")
+  parser.write("someone:x:1022:1022::/home/someone:/bin/bash\n")
+  parser.end()
+  console.log output
+test()
