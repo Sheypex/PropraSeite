@@ -205,7 +205,7 @@ def send_mail(subject, email, term, topuser, sentiment, counted, search):
         with smtplib.SMTP_SSL(smtp_server, port) as server:
             server.login(sender_email, password)
             server.sendmail(sender_email, receiver_email, message.as_string())
-            logging.info("Successfully send email to: ", receiver_email)
+            logging.info("Successfully send email to: "+receiver_email)
     else:
         logging.warning("there was no data to be sent...")
 

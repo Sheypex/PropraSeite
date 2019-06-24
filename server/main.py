@@ -67,7 +67,7 @@ def send_message():
         term_sentiment_result = term_sentiment_analysis_loader.load_terms_sentiment_file(path + search + "Sentiments.csv")
         logging.info('started sending message')
         message_sender.send_mail("Automatic message: Twitter Alert System Summary for #"+search, email,
-                  term_result, term_topuser_result, "", term_counted_result, search, term_sentiment_result)
+                  term_result, term_topuser_result, term_sentiment_result, term_counted_result, search)
         logging.info('Finished sending message')
         return 1
     return 2
