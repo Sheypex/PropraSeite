@@ -8,11 +8,8 @@ def load_terms_counted_file(path):  # loads the file, sorts it and builds a json
     result = pd.read_csv(path, sep=";", error_bad_lines=False)
     result = result[['Term', 'Anzahl']].copy()
     result = result[::-1]
-    return result.to_json(orient='values')
+    return result
 
-
-json = load_terms_counted_file('./Data/TrumpTermsCounted.csv')
-# print json
 
 __author__ = 'Cesar Mauricio Acuna Herrera'
 

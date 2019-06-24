@@ -45,7 +45,7 @@ def build_json(tweets):  # based on the tweets collected it builds the data in j
     tweets['Time'] = pd.to_datetime(tweets.Time, format='%Y-%m-%d %H:%M:%S', errors='coerce')
     tweets = tweets.dropna(subset=['Time'])
     tweets = tweets.set_index('Time').resample('H')['Tweet'].count()
-    return tweets.to_json()
+    return tweets
 
 
 def load_term_file(path):  # loads the file, sorts it and builds a json
@@ -54,8 +54,5 @@ def load_term_file(path):  # loads the file, sorts it and builds a json
     tweets = drop_rows(tweets)
     return build_json(tweets)
 
-
-json = load_term_file("./Data/Trump.csv")
-# print json
 
 __author__ = 'Cesar Mauricio Acuna Herrera'

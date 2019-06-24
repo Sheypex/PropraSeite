@@ -9,10 +9,7 @@ def load_terms_topuser_file(path):  # loads the file, sorts it and builds a json
     result = result[['User', 'Count']].copy()
     result = result[::-1]
     #  print result.to_json(orient='values')
-    return result.to_json(orient='values')
+    return result
 
-
-json = load_terms_topuser_file('./Data/TrumpTopUserTwoColumns.csv')
-# print json
 
 __author__ = 'Cesar Mauricio Acuna Herrera'
