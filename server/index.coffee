@@ -13,7 +13,8 @@ app.get('/test', (req, res)->
   spawn = require('child_process').spawn
   process = spawn('python', ['./main.py',
     req.query.search, # pass data from
-    req.query.type
+    req.query.type,
+    "Data/"
   ]) # GET method. Example: .../test?search=trump&type=1
 
   result = ""
@@ -21,7 +22,7 @@ app.get('/test', (req, res)->
     result += data.toString()
   )
   process.stdout.on('end', () ->
-    console.log result
+    console.log "JSON result: #{result}"
     res.send(result)
   )
 )

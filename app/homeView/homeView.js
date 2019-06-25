@@ -49,7 +49,7 @@
       console.log('success:', result);
       /*div = document.getElementById('test')
       div.innerHTML = "title: #{result.title}<br/>message: #{result.message}"*/
-      return separateData(result, topic);
+      return separateData(result);
     }).catch(function(error) {
       return console.log('error:', error);
     });
@@ -67,19 +67,19 @@
     }
   };
 
-  plotTerm = function(xData, yData, topic) {
+  plotTerm = function(xData, yData, graphName, xName, yName, type) {
     var layout, termData, trace1;
     trace1 = {
       x: xData,
       y: yData,
       type: 'line',
-      name: `${topic} Tweets Loaded`
+      name: graphName
     };
     layout = {
       title: {},
       xaxis: {
         title: {
-          text: 'Dates',
+          text: xName,
           font: {
             family: 'Courier New, monospace',
             size: 18,
@@ -89,7 +89,7 @@
       },
       yaxis: {
         title: {
-          text: 'Number of Tweets',
+          text: yName,
           font: {
             family: 'Courier New, monospace',
             size: 18,
@@ -99,7 +99,7 @@
       }
     };
     termData = [trace1];
-    return Plotly.newPlot('term', termData, layout);
+    return Plotly.newPlot(type, termData, layout);
   };
 
   plotBubbleChart = function(xData, yData, hashtags, size, type) {
@@ -145,17 +145,12 @@
     return Plotly.newPlot(type, data, layout);
   };
 
-  loadData = function() {
-    var jsonString;
-    // TODO: This should be loaded from the node.js server
-    jsonString = "{\"result\":{\"term\":{\"1558213200000\":16896,\"1558216800000\":1,\"1558220400000\":0,\"1558224000000\":0,\"1558227600000\":1,\"1558231200000\":0,\"1558234800000\":0,\"1558238400000\":0,\"1558242000000\":0,\"1558245600000\":0,\"1558249200000\":0,\"1558252800000\":0,\"1558256400000\":0,\"1558260000000\":0,\"1558263600000\":193},\"counted\":[[\"#BREAKING\",5],[\"#moms\",6],[\"#EEUU\",6],[\"#toddlers\",6],[\"#MAGAmemes\",7],[\"#maga\",7],[\"#WAKEUPAMERICA\",8],[\"#RT\",13],[\"#trump\",14],[\"#FAUXnews\",14],[\"#ccot\",17],[\"#tcot\",30],[\"#kag\",33],[\"#NATO\",35]],\"topuser\":[[\"bettyblack176\",11],[\"all_sabrina\",11],[\"MaryFabulous3\",11],[\"lpbrown7\",12],[\"AmericanMom2\",12],[\"ProfSchlitzo7\",12],[\"Pasha_Enrik\",12],[\"trilingual1946\",12],[\"FLpalmtree1\",12],[\"minamoradi2020\",12],[\"BarleyFields1\",12],[\"AJHolland01\",13],[\"sueludad\",13],[\"spooner_lindsay\",13],[\"rawlings_cindy\",13],[\"Sekusa1\",13],[\"atypicalblonde\",14],[\"Pissed_Woman\",14],[\"JeffreyHardin15\",14],[\"kathy_levy\",15],[\"primfreak\",15],[\"gnod111\",16],[\"SearchingForTr9\",16],[\"Eyerish13\",16],[\"GymCoachMac\",17]]}}";
+  loadData = function(jsonString = "{\"result\":{\"term\":{\"1558213200000\":16896,\"1558216800000\":1,\"1558220400000\":0,\"1558224000000\":0,\"1558227600000\":1,\"1558231200000\":0,\"1558234800000\":0,\"1558238400000\":0,\"1558242000000\":0,\"1558245600000\":0,\"1558249200000\":0,\"1558252800000\":0,\"1558256400000\":0,\"1558260000000\":0,\"1558263600000\":193},\"counted\":[[\"#BREAKING\",5],[\"#moms\",6],[\"#EEUU\",6],[\"#toddlers\",6],[\"#MAGAmemes\",7],[\"#maga\",7],[\"#WAKEUPAMERICA\",8],[\"#RT\",13],[\"#trump\",14],[\"#FAUXnews\",14],[\"#ccot\",17],[\"#tcot\",30],[\"#kag\",33],[\"#NATO\",35]],\"topuser\":[[\"bettyblack176\",11],[\"all_sabrina\",11],[\"MaryFabulous3\",11],[\"lpbrown7\",12],[\"AmericanMom2\",12],[\"ProfSchlitzo7\",12],[\"Pasha_Enrik\",12],[\"trilingual1946\",12],[\"FLpalmtree1\",12],[\"minamoradi2020\",12],[\"BarleyFields1\",12],[\"AJHolland01\",13],[\"sueludad\",13],[\"spooner_lindsay\",13],[\"rawlings_cindy\",13],[\"Sekusa1\",13],[\"atypicalblonde\",14],[\"Pissed_Woman\",14],[\"JeffreyHardin15\",14],[\"kathy_levy\",15],[\"primfreak\",15],[\"gnod111\",16],[\"SearchingForTr9\",16],[\"Eyerish13\",16],[\"GymCoachMac\",17]],\"sentiment\":[{\"Tweet_ID\": 1.1292963741497016e+18, \"Sentiment\": 0.75, \"Time\": \"2019-05-17 10:03:31\"},{\"Tweet_ID\": 1.129296389337432e+18, \"Sentiment\": 0.0, \"Time\": \"2019-05-17 10:03:35\"}]}}") {
     return JSON.parse(jsonString);
   };
 
-  separateData = function(data, topic) {
-    var count, countedData, hashtags, size, size2, termsData, topUser, topUserData, xCounted, xTerm, xTopUser, yCounted, yTerm, yTopUser;
-    //data = loadData()
-
+  separateData = function(data) {
+    var count, countedData, hashtags, sentimentsData, size, size2, termsData, topUser, topUserData, xCounted, xSentiment, xTerm, xTopUser, yCounted, ySentiment, yTerm, yTopUser;
     // terms Data
     termsData = data.result.term;
     xTerm = [];
@@ -192,8 +187,17 @@
       size2.push(topUserData[key][1] * 4);
       return topUser.push(topUserData[key][0]);
     });
+    // Sentiment Data
+    sentimentsData = data.result.sentiment;
+    xSentiment = [];
+    ySentiment = [];
+    sentimentsData.forEach(function(element) {
+      xSentiment.push(element.Time);
+      return ySentiment.push(element.Sentiment);
+    });
     // plot all the data  and visualize it
-    plotTerm(xTerm, yTerm, topic);
+    plotTerm(xTerm, yTerm, 'Tweets Loaded', 'Dates', 'Number of Tweets', 'term');
+    plotTerm(xSentiment, ySentiment, "Sentiment Analisis", "Dates", "Sentiment", "sentiment");
     plotBubbleChart(xCounted, yCounted, hashtags, size, "counted");
     return plotBubbleChart(xTopUser, yTopUser, topUser, size2, "topuser");
   };

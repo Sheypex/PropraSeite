@@ -24,14 +24,15 @@
     process = spawn('python', [
       './main.py',
       req.query.search, // pass data from
-      req.query.type // GET method. Example: .../test?search=trump&type=1
+      req.query.type,
+      "Data/" // GET method. Example: .../test?search=trump&type=1
     ]);
     result = "";
     process.stdout.on('data', function(data) {
       return result += data.toString();
     });
     return process.stdout.on('end', function() {
-      console.log(result);
+      console.log(`JSON result: ${result}`);
       return res.send(result);
     });
   });
