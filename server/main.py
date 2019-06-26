@@ -81,11 +81,28 @@ def send_message():
     :return: 1 if it was succesfull to send the email. Otherwise 0
     """
     if is_in_database():
-        term_result = term_loader.load_term_file(path + search + ".csv")  # result = JSON_Object containing pair of JSON_Objects
-        term_counted_result = terms_counted_loader.load_terms_counted_file(path + search + "TermsCounted.csv")  # result = JSON_Array containing JSON_Arrays
-        term_topuser_result = term_top_users_loader.load_terms_topuser_file(path + search + "TopUser.csv")  # result = JSON_Array containing JSON_Arrays
-        term_sentiment_result = term_sentiment_analysis_loader.load_terms_sentiment_file(path + search + "Sentiments.csv")
-        logging.info('started sending message')
+        try:
+            term_result = term_loader.load_term_file(
+                path + search + ".csv")  # result = JSON_Object containing pair of JSON_Objects
+        except Exception:
+            term_result = ""
+
+        try:
+            term_counted_result = terms_counted_loader.load_terms_counted_file(path + search + "TermsCounted.csv")  # result = JSON_Array containing JSON_Arrays
+        except Exception:
+            term_counted_result = ""
+
+        try:
+            term_topuser_result = term_top_users_loader.load_terms_topuser_file(path + search + "TopUser.csv")  # result = JSON_Array containing JSON_Arrays
+        except Exception:
+            term_topuser_result = ""
+
+        try:
+            term_sentiment_result = term_sentiment_analysis_loader.load_terms_sentiment_file(path + search + "Sentiments.csv")
+        except Exception:
+            term_sentiment_result = ""
+
+        logging.info('starting to send message')
         message_sender.send_mail("Automatic message: Twitter Alert System Summary for #"+search, email,
                   term_result, term_topuser_result, term_sentiment_result, term_counted_result, search)
         logging.info('Finished sending message')
