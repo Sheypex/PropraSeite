@@ -6,4 +6,4 @@ tmp
 .DS_Store
 .idea
 venv/
-server/logs.log
+*/logs.log
