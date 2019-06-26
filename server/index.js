@@ -18,13 +18,33 @@
     return console.log(`Listening on port ${port}`);
   });
 
+  app.post("/email", function(req, res) {
+    var process, result, spawn;
+    spawn = require('child_process').spawn;
+    process = spawn('python', [
+      './main.py',
+      req.query.search, // pass data from
+      "2",
+      "Data/",
+      req.query.email // GET method. Example: .../email?search=trump&type=1
+    ]);
+    result = "";
+    process.stdout.on('data', function(data) {
+      return result += data.toString();
+    });
+    return process.stdout.on('end', function() {
+      console.log(`Email task result: ${result}`);
+      return res.send(result);
+    });
+  });
+
   app.get('/test', function(req, res) {
     var process, result, spawn;
     spawn = require('child_process').spawn;
     process = spawn('python', [
       './main.py',
       req.query.search, // pass data from
-      req.query.type,
+      "1",
       "Data/" // GET method. Example: .../test?search=trump&type=1
     ]);
     result = "";

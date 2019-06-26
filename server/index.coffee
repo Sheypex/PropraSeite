@@ -9,11 +9,30 @@ app.use express.json()
 app.listen port, () ->
   console.log "Listening on port #{port}"
 
+app.post("/email", (req, res) ->
+  spawn = require('child_process').spawn
+  process = spawn('python', ['./main.py',
+    req.query.search, # pass data from
+    "2",
+    "Data/",
+    req.query.email
+  ]) # GET method. Example: .../email?search=trump&type=1
+
+  result = ""
+  process.stdout.on('data', (data) ->
+    result += data.toString()
+  )
+  process.stdout.on('end', () ->
+    console.log "Email task result: #{result}"
+    res.send(result)
+  )
+)
+
 app.get('/test', (req, res)->
   spawn = require('child_process').spawn
   process = spawn('python', ['./main.py',
     req.query.search, # pass data from
-    req.query.type,
+    "1",
     "Data/"
   ]) # GET method. Example: .../test?search=trump&type=1
 
