@@ -39,11 +39,31 @@ def get_data():
     loads the data from the respective files and return a pre processed result
     :return: adds the data to a single String line in json format
     """
-    term_result = term_loader.load_term_file(path + search + ".csv").to_json()  # result = JSON_Object containing pair of JSON_Objects
-    term_counted_result = terms_counted_loader.load_terms_counted_file(path + search + "TermsCounted.csv").to_json(orient='values')  # result = JSON_Array containing JSON_Arrays
-    term_topuser_result = term_top_users_loader.load_terms_topuser_file(path + search + "TopUser.csv").to_json(orient='values')  # result = JSON_Array containing JSON_Arrays
-    term_sentiment_result = term_sentiment_analysis_loader.load_terms_sentiment_file(path + search + "Sentiments.csv")
-    json_result = "{\"result\":{\"term\":"+term_result+",\"counted\":"+term_counted_result+",\"topuser\":"+term_topuser_result+",\"sentiment\":["+",".join(map(str, term_sentiment_result))+"]}}"
+    try:
+        term_result = term_loader.load_term_file(path + search + ".csv").to_json()  # result = JSON_Object containing pair of JSON_Objects
+    except Exception:
+        logging.warning("unable to load the term.csv file...")
+        term_result = "\"no_data\""
+
+    try:
+        term_counted_result = terms_counted_loader.load_terms_counted_file(path + search + "TermsCounted.csv").to_json(orient='values')  # result = JSON_Array containing JSON_Arrays
+    except Exception:
+        logging.warning("unable to load the termsCounted.csv file...")
+        terms_counted_result = "\"no_data\""
+
+    try:
+        term_topuser_result = term_top_users_loader.load_terms_topuser_file(path + search + "TopUser.csv").to_json(orient='values')  # result = JSON_Array containing JSON_Arrays
+    except Exception:
+        logging.warning("unable to load the termTopUser.csv file...")
+        term_topuser_result = "\"no_data\""
+
+    try:
+        term_sentiment_result = "["+",".join(map(str, term_sentiment_analysis_loader.load_terms_sentiment_file(path + search + "Sentiments.csv")))+"]"
+    except Exception:
+        logging.warning("unable to load the termSentiments.csv file...")
+        term_sentiment_result = "\"no_data\""
+
+    json_result = "{\"result\":{\"term\":"+term_result+",\"counted\":"+term_counted_result+",\"topuser\":"+term_topuser_result+",\"sentiment\":"+term_sentiment_result+"}}"
     json_result = json_result.replace("\'", "\"")
     logging.warning("result: "+json_result)
     return json_result
