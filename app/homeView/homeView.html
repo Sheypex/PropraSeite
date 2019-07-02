@@ -36,23 +36,24 @@
     <div class="row text-white">
         <div class="col">
             <div id="test"></div>
-            <div ng-show="showTerm">
+            <loading-gif show="loading"></loading-gif>
+            <div ng-show="!loading&&showTerm">
                 <h1>{{topic}} Tweets Loaded</h1>
                 <div id="term">
                 </div>
                 <br>
             </div>
-            <div ng-show="showCounted">
+            <div ng-show="!loading&&showCounted">
                 <h1>{{topic}} Hashtags counted</h1>
                 <div id="counted"></div>
                 <br>
             </div>
-            <div ng-show="showTopUser">
+            <div ng-show="!loading&&showTopUser">
                 <h1>{{topic}} Top Users counted</h1>
                 <div id="topuser"></div>
                 <br>
             </div>
-            <div ng-show="showSentiment">
+            <div ng-show="!loading&&showSentiment">
                 <h1>{{topic}} Sentiment</h1>
                 <div id="sentiment">
                 </div>

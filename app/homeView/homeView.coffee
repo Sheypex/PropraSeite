@@ -7,56 +7,85 @@ angular.module('myApp.homeView', ['ngRoute'])
       controller: 'View1Ctrl'
     }
 ])
-  .controller('View1Ctrl', ["$scope", ($scope) ->
-    $scope.topics = ["Trump", "Klimawandel", "FakeNews"]
-    $scope.topic = $scope.topics[0]
-    $scope.showTerm = true
-    $scope.showCounted = true
-    $scope.showTopUser = true
-    $scope.showSentiment = true
-    $scope.selectTopic = (topic) ->
-      $scope.topic = topic
-      updateGraphs($scope, $scope.topic)
-      console.log topic
-      console.log $scope.showTerm
-      console.log $scope.showCounted
-      console.log $scope.showTopUser
-      console.log $scope.showSentiment
+  .controller('View1Ctrl', ["$scope", "$interval", (scope, interval) ->
+    scope.topics = ["Trump", "Klimawandel", "FakeNews"]
+    scope.topic = scope.topics[0]
+    scope.showTerm = true
+    scope.showCounted = true
+    scope.showTopUser = true
+    scope.showSentiment = true
+    scope.loading = true
+    scope.selectTopic = (topic) ->
+      scope.topic = topic
+      newGraphs(scope, interval, scope.topic)
     #
-    $scope.userEmail = ""
-    $scope.sendEmail = () ->
-      sendEmail($scope.topic, $scope.userEmail)
+    scope.userEmail = ""
+    scope.sendEmail = () ->
+      sendEmail(scope.topic, scope.userEmail)
     #
-    $scope.topicQuery = ""
-    $scope.queryTopic = () ->
-      $scope.topic = $scope.topicQuery
-      queryTopic($scope, $scope.topicQuery)
+    scope.topicQuery = ""
+    scope.queryTopic = () ->
+      scope.topic = scope.topicQuery
+      queryTopic(scope, interval, scope.topicQuery)
     #
-    updateGraphs($scope, $scope.topic)
+    newGraphs(scope, interval, scope.topic)
 ])
+  .directive('loadingGif', () ->
+    {
+      restrict: "E"
+      scope: {
+        show:"="
+      }
+      templateUrl: "../loadingGifTemplate.html"
+    }
+)
 
-queryTopic = (scope, topic) ->
-  updateGraphs(scope, topic, "query")
+queryTopic = (scope, interval, topic) ->
+  status = await newGraphs(scope, interval, topic, "query")
+  interval.cancel(scope.timeoutId)
+  if status isnt -1
+    scope.timeoutId = interval((()->
+      console.log "updating graphs"
+      updateQueryGraphs(scope, topic)
+    ),1000)
 
 sendEmail = (topic, userEmail) ->
   fetch("http://localhost:8080/email?search=#{topic}&email=#{userEmail}", {method: "POST"})
 
-updateGraphs = (scope, topic, url="static") ->
-  if (url == "static") then url = "http://localhost:8080/test?search=#{topic}&type=1"
-  else if (url == "query") then  url = "https://giant-firefox-64.localtunnel.me/test?search=#{topic}"
-  else return -1
-
+reqGraphData = (topic, url = "static", size = 1000)->
+  if (url == "static") then url = "http://localhost:8080/test?search=#{topic}&type=1" else if (url == "query") then  url = "https://giant-firefox-64.localtunnel.me/test?search=#{topic}&size=#{size}" else return -1
   fetch(url, {mode: 'cors'})
     .then((response) ->
       console.log(response)
       response.text()
-    )
-    .then((text) ->
-      console.log(text)
-      separateData(scope, JSON.parse(text))
-    )
+  )
     .catch((error) ->
       console.log('Request failed', error)
+      return -1
+  )
+  
+newGraphs = (scope, interval, topic, url="static", size=1000) ->
+  scope.loading = true
+  interval.cancel(scope.timeoutId)
+  graphData = await reqGraphData(topic, url, size)
+  if(graphData == -1) then return -1 else
+    console.log(graphData)
+    scope.graphData = JSON.parse(graphData)
+    separateData(scope, scope.graphData)
+    scope.$apply(()->
+      scope.loading = false
+    )
+
+
+updateQueryGraphs = (scope, topic, size=10) ->
+  scope.loading = true
+  graphData = await reqGraphData(topic, "query", size)
+  if(graphData == -1) then return -1 else
+    scope.graphData = Object.assign(scope.graphData, JSON.parse(graphData))
+    console.log(graphData)
+    separateData(scope, scope.graphData)
+    scope.$apply(()->
+      scope.loading = false
     )
 
 getDateFormat = (date) ->
