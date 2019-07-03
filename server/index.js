@@ -41,6 +41,7 @@
   app.get('/test', function(req, res) {
     var process, result, spawn;
     spawn = require('child_process').spawn;
+    console.log(__dirname + "/Data/");
     process = spawn('python', [
       './main.py',
       req.query.search, // pass data from

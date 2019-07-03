@@ -30,6 +30,7 @@ app.post("/email", (req, res) ->
 
 app.get('/test', (req, res)->
   spawn = require('child_process').spawn
+  console.log __dirname + "/Data/"
   process = spawn('python', ['./main.py',
     req.query.search, # pass data from
     "1",
