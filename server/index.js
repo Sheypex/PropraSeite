@@ -45,7 +45,7 @@
       './main.py',
       req.query.search, // pass data from
       "1",
-      "Data/" // GET method. Example: .../test?search=trump&type=1
+      __dirname + "/Data/" // GET method. Example: .../test?search=trump&type=1
     ]);
     result = "";
     process.stdout.on('data', function(data) {

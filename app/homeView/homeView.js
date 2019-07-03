@@ -26,6 +26,7 @@
       scope.showTopUser = true;
       scope.showSentiment = true;
       scope.loading = true;
+      scope.updating = false;
       scope.selectTopic = function(topic) {
         scope.topic = topic;
         return newGraphs(scope,
@@ -67,8 +68,10 @@
     interval.cancel(scope.timeoutId);
     if (status !== -1) {
       return scope.timeoutId = interval((function() {
-        console.log("updating graphs");
-        return updateQueryGraphs(scope, topic);
+        if (!scope.updating) {
+          console.log("updating graphs");
+          return updateQueryGraphs(scope, topic);
+        }
       }), 1000);
     }
   };
@@ -79,11 +82,13 @@
     });
   };
 
-  reqGraphData = function(topic, url = "static", size = 1000) {
+  reqGraphData = function(topic, url = "static") {
     if (url === "static") {
       url = `http://localhost:8080/test?search=${topic}&type=1`;
     } else if (url === "query") {
-      url = `https://giant-firefox-64.localtunnel.me/test?search=${topic}&size=${size}`;
+      url = `https://bright-walrus-27.localtunnel.me/test?search=${topic}`;
+    } else if (url === "poll") {
+      url = "https://bright-walrus-27.localtunnel.me/test/poll";
     } else {
       return -1;
     }
@@ -98,11 +103,11 @@
     });
   };
 
-  newGraphs = async function(scope, interval, topic, url = "static", size = 1000) {
+  newGraphs = async function(scope, interval, topic, url = "static") {
     var graphData;
     scope.loading = true;
     interval.cancel(scope.timeoutId);
-    graphData = (await reqGraphData(topic, url, size));
+    graphData = (await reqGraphData(topic, url));
     if (graphData === -1) {
       return -1;
     } else {
@@ -115,20 +120,18 @@
     }
   };
 
-  updateQueryGraphs = async function(scope, topic, size = 10) {
+  updateQueryGraphs = async function(scope, topic) {
     var graphData;
-    scope.loading = true;
-    graphData = (await reqGraphData(topic, "query", size));
+    scope.updating = true;
+    graphData = (await reqGraphData(topic, "poll"));
     if (graphData === -1) {
       return -1;
     } else {
-      scope.graphData = Object.assign(scope.graphData, JSON.parse(graphData));
+      scope.graphData = JSON.parse(graphData);
       console.log(graphData);
       separateData(scope, scope.graphData);
-      return scope.$apply(function() {
-        return scope.loading = false;
-      });
     }
+    return scope.updating = false;
   };
 
   getDateFormat = function(date) {

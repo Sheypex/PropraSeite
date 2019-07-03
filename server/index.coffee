@@ -33,7 +33,7 @@ app.get('/test', (req, res)->
   process = spawn('python', ['./main.py',
     req.query.search, # pass data from
     "1",
-    "Data/"
+    __dirname + "/Data/"
   ]) # GET method. Example: .../test?search=trump&type=1
 
   result = ""

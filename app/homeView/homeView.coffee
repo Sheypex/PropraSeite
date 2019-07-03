@@ -15,6 +15,7 @@ angular.module('myApp.homeView', ['ngRoute'])
     scope.showTopUser = true
     scope.showSentiment = true
     scope.loading = true
+    scope.updating = false
     scope.selectTopic = (topic) ->
       scope.topic = topic
       newGraphs(scope, interval, scope.topic)
@@ -45,15 +46,16 @@ queryTopic = (scope, interval, topic) ->
   interval.cancel(scope.timeoutId)
   if status isnt -1
     scope.timeoutId = interval((()->
-      console.log "updating graphs"
-      updateQueryGraphs(scope, topic)
+      if not scope.updating
+        console.log "updating graphs"
+        updateQueryGraphs(scope, topic)
     ),1000)
 
 sendEmail = (topic, userEmail) ->
   fetch("http://localhost:8080/email?search=#{topic}&email=#{userEmail}", {method: "POST"})
 
-reqGraphData = (topic, url = "static", size = 1000)->
-  if (url == "static") then url = "http://localhost:8080/test?search=#{topic}&type=1" else if (url == "query") then  url = "https://giant-firefox-64.localtunnel.me/test?search=#{topic}&size=#{size}" else return -1
+reqGraphData = (topic, url = "static")->
+  if (url == "static") then url = "http://localhost:8080/test?search=#{topic}&type=1" else if (url == "query") then  url = "https://bright-walrus-27.localtunnel.me/test?search=#{topic}" else if (url is "poll") then url ="https://bright-walrus-27.localtunnel.me/test/poll" else return -1
   fetch(url, {mode: 'cors'})
     .then((response) ->
       console.log(response)
@@ -64,10 +66,10 @@ reqGraphData = (topic, url = "static", size = 1000)->
       return -1
   )
   
-newGraphs = (scope, interval, topic, url="static", size=1000) ->
+newGraphs = (scope, interval, topic, url="static") ->
   scope.loading = true
   interval.cancel(scope.timeoutId)
-  graphData = await reqGraphData(topic, url, size)
+  graphData = await reqGraphData(topic, url)
   if(graphData == -1) then return -1 else
     console.log(graphData)
     scope.graphData = JSON.parse(graphData)
@@ -77,16 +79,14 @@ newGraphs = (scope, interval, topic, url="static", size=1000) ->
     )
 
 
-updateQueryGraphs = (scope, topic, size=10) ->
-  scope.loading = true
-  graphData = await reqGraphData(topic, "query", size)
+updateQueryGraphs = (scope, topic) ->
+  scope.updating = true
+  graphData = await reqGraphData(topic, "poll")
   if(graphData == -1) then return -1 else
-    scope.graphData = Object.assign(scope.graphData, JSON.parse(graphData))
+    scope.graphData = JSON.parse(graphData)
     console.log(graphData)
     separateData(scope, scope.graphData)
-    scope.$apply(()->
-      scope.loading = false
-    )
+  scope.updating = false
 
 getDateFormat = (date) ->
   return date.getFullYear() + "-" + checkDateLength(date.getMonth() + 1) + "-" + checkDateLength(date.getDate()) + " " + checkDateLength(date.getHours()) + ":" + checkDateLength(date.getMinutes()) + ":" + checkDateLength(date.getSeconds())
