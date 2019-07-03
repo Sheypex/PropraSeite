@@ -31,7 +31,7 @@ def is_in_database():  # TODO: check with the database if the search term is val
     if search in tweets_available:
         return True
     else:
-        return False
+        return True  # TODO: once added some logic to check the term, change to FALSE
 
 
 def get_data():
@@ -103,11 +103,13 @@ def send_message():
             term_sentiment_result = ""
 
         logging.info('starting to send message')
-        message_sender.send_mail("Automatic message: Twitter Alert System Summary for #"+search, email,
+        logging.info('send_mail passed data: ')
+        logging.info('search: '+search)
+        logging.info('email: ' + email)
+        message_status = message_sender.send_mail("Automatic message: Twitter Alert System Summary for #"+search, email,
                   term_result, term_topuser_result, term_sentiment_result, term_counted_result, search)
         logging.info('Finished sending message')
-        return 1
-    return 2
+        return message_status
 
 
 def unkown_action():  # error message if the action type wasnt defined
@@ -146,7 +148,7 @@ result = define_action()
 print(str(result))  # this print is the one who is responsible for sending the json results back to the node server
 sys.stdout.flush()
 
-#  example input: python main.py Trump 2 ./Data/ message.alert.system@gmail.com
-#  example input: python main.py Trump 1 ./Data/
+#  example input: python3 main.py Trump 2 ./Data/ message.alert.system@gmail.com
+#  example input: python3 main.py Trump 1 ./Data/
 
 __author__ = 'Cesar Mauricio Acuna Herrera'
