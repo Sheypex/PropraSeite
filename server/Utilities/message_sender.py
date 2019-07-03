@@ -138,7 +138,6 @@ def has_data(term, topuser, sentiment, counted):
 
 
 def send_mail(subject, email, term, topuser, sentiment, counted, search):
-    logging.warning("send_mail passed data: subject = "+subject+"; email = "+email+"; term = "+term+"; topuser = " + topuser + "; sentiment = "+sentiment+"; counted = "+counted+"; search ="+search)
     """
     sends an Email with the given subject, message_text and an html_elements version of the text
     """
@@ -207,8 +206,10 @@ def send_mail(subject, email, term, topuser, sentiment, counted, search):
             server.login(sender_email, password)
             server.sendmail(sender_email, receiver_email, message.as_string())
             logging.info("Successfully send email to: "+receiver_email)
+            return 1
     else:
         logging.warning("there was no data to be sent...")
+        return 0
 
 
 logging.basicConfig(filename='logs.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
