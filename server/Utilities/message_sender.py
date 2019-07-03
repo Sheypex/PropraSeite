@@ -138,6 +138,7 @@ def has_data(term, topuser, sentiment, counted):
 
 
 def send_mail(subject, email, term, topuser, sentiment, counted, search):
+    logging.warning("send_mail passed data: subject = "+subject+"; email = "+email+"; term = "+term+"; topuser = " + topuser + "; sentiment = "+sentiment+"; counted = "+counted+"; search ="+search)
     """
     sends an Email with the given subject, message_text and an html_elements version of the text
     """
