@@ -12,7 +12,7 @@
     "bootstrap": "^4.3.1",
     "html5-boilerplate": "0.0.1",
     "install": "^0.12.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "npm": "^6.9.0",
     "popper.js": "^1.15.0"
   },
